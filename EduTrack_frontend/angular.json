@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "EduTrack": {
+    "EduTrack_frontend": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -26,7 +26,12 @@
             ],
             "styles": [
               "src/styles.css"
-            ]
+            ],
+            "server": "src/main.server.ts",
+            "outputMode": "server",
+            "ssr": {
+              "entry": "src/server.ts"
+            }
           },
           "configurations": {
             "production": {
@@ -56,10 +61,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "EduTrack:build:production"
+              "buildTarget": "EduTrack_frontend:build:production"
             },
             "development": {
-              "buildTarget": "EduTrack:build:development"
+              "buildTarget": "EduTrack_frontend:build:development"
             }
           },
           "defaultConfiguration": "development"

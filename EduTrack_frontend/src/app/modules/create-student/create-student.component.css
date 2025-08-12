@@ -1,0 +1,14 @@
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-top: 8px;
+  }
+
+  .full {
+    width: 100%;
+  }
+
+  .button-group {
+    padding-top: 8px;
+  }

@@ -1,0 +1,31 @@
+<h2 mat-dialog-title>{{ mode === 'create' ? 'Add Student' : 'Edit Student' }}</h2>
+
+<mat-dialog-content [formGroup]="form" class="form-container">
+  
+  <mat-form-field appearance="outline" class="full">
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full">
+    <mat-label>Email</mat-label>
+    <input matInput formControlName="email" placeholder="email@example.com" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full">
+    <mat-label>Age</mat-label>
+    <input matInput type="number" formControlName="age" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full">
+    <mat-label>Course</mat-label>
+    <input matInput formControlName="course" />
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="button-group">
+  <button mat-stroked-button color="warn" (click)="close()">Cancel</button>
+  <button mat-flat-button color="primary" (click)="save()">
+    {{ mode === 'create' ? 'Save' : 'Update' }}
+  </button>
+</mat-dialog-actions>

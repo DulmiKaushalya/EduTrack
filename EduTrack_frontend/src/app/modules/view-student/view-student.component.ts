@@ -30,10 +30,10 @@ export class ViewStudentComponent implements OnInit {
   dataSource: Student[] = [];
   loading = false;
 
-  constructor(
-    private studentService: StudentService,
-    private dialog: MatDialog,
-    private snack: MatSnackBar
+  constructor( 
+    private studentService: StudentService, //call backend API.
+    private dialog: MatDialog,//Opens popups.
+    private snack: MatSnackBar //toast messages.
   ) {}
 
   ngOnInit() {
@@ -94,7 +94,6 @@ export class ViewStudentComponent implements OnInit {
 
   deleteStudent(student: Student) {
     if (!student._id) return;
-    // Per requirement: delete when clicking delete button (no extra confirm required)
     this.studentService.delete(student._id).subscribe({
       next: () => {
         this.snack.open('Student deleted', 'Close', { duration: 2000 });

@@ -7,6 +7,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatError } from '@angular/material/form-field';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-create-student',
@@ -18,7 +20,9 @@ import { MatButtonModule } from '@angular/material/button';
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatError,
+    CommonModule
   ]
 })
 export class CreateStudentComponent implements OnInit {
@@ -47,6 +51,8 @@ export class CreateStudentComponent implements OnInit {
   save() {
     if (this.form.valid) {
       this.dialogRef.close(this.form.value);
+    } else {
+      this.form.markAllAsTouched();
     }
   }
 

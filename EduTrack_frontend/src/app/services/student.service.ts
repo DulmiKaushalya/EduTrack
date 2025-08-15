@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AuthService } from './auth.service';
 
 export interface Student {
   _id?: string;
@@ -13,25 +14,35 @@ export interface Student {
   providedIn: 'root'
 })
 export class StudentService {
-   constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
+
+  private getAuthHeaders() {
+    const token = this.authService.getToken();
+    return {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${token}`
+      })
+    };
+  }
 
   getAll(){
-    return this.http.get<Student[]>("http://localhost:3000/students");
+    return this.http.get<Student[]>("http://localhost:3000/students", this.getAuthHeaders());
   }
 
   create(student: Student){
-    return this.http.post<Student>("http://localhost:3000/students",student);
+    return this.http.post<Student>("http://localhost:3000/students", student, this.getAuthHeaders());
   }
-getById(id: string) {
-        return this.http.get<Student>(`http://localhost:3000/students/${id}`);
-    }
+
+  getById(id: string) {
+    return this.http.get<Student>(`http://localhost:3000/students/${id}`, this.getAuthHeaders());
+  }
 
   update(id: string, student: Student){
-    return this.http.put<Student>(`http://localhost:3000/students/${id}`, student);
+    return this.http.put<Student>(`http://localhost:3000/students/${id}`, student, this.getAuthHeaders());
   }
 
   delete(id: string) {
-    return this.http.delete(`http://localhost:3000/students/${id}`, { observe: 'response' });
+    return this.http.delete(`http://localhost:3000/students/${id}`, { ...this.getAuthHeaders(), observe: 'response' });
   }
 }
 

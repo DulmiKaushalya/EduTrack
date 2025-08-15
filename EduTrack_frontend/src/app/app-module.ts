@@ -17,6 +17,7 @@ import { AppComponent } from './app.component';
 
 import { ViewStudentModule } from './modules/view-student/view-student.module';
 import { CreateStudentModule } from './modules/create-student/create-student.module';
+import { LoginModule } from './modules/login/login.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -26,7 +27,6 @@ import { CreateStudentModule } from './modules/create-student/create-student.mod
     ReactiveFormsModule,
     AppRoutingModule,
     HttpClientModule,
-    // material
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
@@ -35,9 +35,9 @@ import { CreateStudentModule } from './modules/create-student/create-student.mod
     MatInputModule,
     MatTableModule,
     MatSnackBarModule,
-    //  modules
     ViewStudentModule,
-    CreateStudentModule
+    CreateStudentModule,
+    LoginModule
   ],
   providers: [],
   bootstrap: [AppComponent]

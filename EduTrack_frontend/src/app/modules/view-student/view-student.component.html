@@ -4,14 +4,14 @@
     Add Student
   </button>
 </div>
-<table class="students-table">
+  <table class="students-table">
   <thead>
     <tr>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Age</th>
-      <th>Course</th>
-      <th style="text-align: right;"></th>
+      <th class="col_name">Name</th>
+      <th class="col_email">Email</th>
+      <th class="col_age">Age</th>
+      <th class="col_course">Course</th>
+      <th class="col_action">Action</th>
     </tr>
   </thead>
   <tbody>
@@ -20,7 +20,7 @@
       <td>{{ student.email }}</td>
       <td>{{ student.age }}</td>
       <td>{{ student.course }}</td>
-      <td style="text-align: right;">
+      <td >
         <button mat-icon-button (click)="openEdit(student)" aria-label="Edit">
           <mat-icon>edit</mat-icon>
         </button>
@@ -31,3 +31,4 @@
     </tr>
   </tbody>
 </table>
+

@@ -7,5 +7,4 @@ import { Component, signal } from '@angular/core';
   styleUrls: ['./app.component.css']   
 })
 export class AppComponent {
-  title = signal('EduTrack_frontend');
 }

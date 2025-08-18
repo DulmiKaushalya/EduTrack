@@ -37,9 +37,9 @@ import { LoginModule } from './modules/login/login.module';
     MatSnackBarModule,
     ViewStudentModule,
     CreateStudentModule,
-    LoginModule
+    LoginModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

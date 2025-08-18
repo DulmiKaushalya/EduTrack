@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from './auth.service';
+import { map } from 'rxjs/operators';
 
 export interface Student {
   _id?: string;
@@ -8,6 +9,7 @@ export interface Student {
   email: string;
   age?: number | null;
   course?: string;
+  createdAt?: string; // Add createdAt for sorting
 }
 
 @Injectable({
@@ -43,6 +45,12 @@ export class StudentService {
 
   delete(id: string) {
     return this.http.delete(`http://localhost:3000/students/${id}`, { ...this.getAuthHeaders(), observe: 'response' });
+  }
+
+  checkEmailUnique(email: string) {
+    // Assumes backend endpoint exists: /students/check-email?email=...
+    return this.http.get<{ isUnique: boolean }>(`http://localhost:3000/students/check-email?email=${encodeURIComponent(email)}`)
+      .pipe(map(res => res.isUnique));
   }
 }
 

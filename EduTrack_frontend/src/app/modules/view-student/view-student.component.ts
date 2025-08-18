@@ -1,6 +1,24 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 import { StudentService, Student } from '../../services/student.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+// Simple confirmation dialog component
+import { Component as NgComponent } from '@angular/core';
+
+@NgComponent({
+  standalone: true,
+  imports: [MatDialogModule, MatButtonModule],
+  template: `
+    <h2 mat-dialog-title>Confirm Delete</h2>
+    <mat-dialog-content>Are you sure you want to delete this student?</mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close>No</button>
+      <button mat-button color="warn" mat-dialog-close="true">Yes</button>
+    </mat-dialog-actions>
+  `
+})
+export class ConfirmDeleteDialog {}
 import { CreateStudentComponent } from '../create-student/create-student.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -33,8 +51,15 @@ export class ViewStudentComponent implements OnInit {
   constructor( 
     private studentService: StudentService, //call backend API.
     private dialog: MatDialog,//Opens popups.
-    private snack: MatSnackBar //toast messages.
+    private snack: MatSnackBar, //toast messages.
+    private authService: AuthService, 
+    private router: Router
   ) {}
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
 
   ngOnInit() {
     this.fetch();
@@ -44,7 +69,13 @@ export class ViewStudentComponent implements OnInit {
     this.loading = true;
     this.studentService.getAll().subscribe({
       next: (res) => {
-        this.dataSource = res;
+        // Sort by createdAt descending (newest first)
+        this.dataSource = res.sort((a, b) => {
+          // If createdAt is missing, treat as oldest
+          const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+          const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+          return dateB - dateA;
+        });
         this.loading = false;
       },
       error: () => {
@@ -63,9 +94,10 @@ export class ViewStudentComponent implements OnInit {
     ref.afterClosed().subscribe(result => {
       if (result) {
         this.studentService.create(result).subscribe({
-          next: () => {
+          next: (createdStudent) => {
             this.snack.open('Student created', 'Close', { duration: 2000 });
-            this.fetch();
+            // Add new student to top of table
+            this.dataSource = [createdStudent, ...this.dataSource];
           },
           error: () => this.snack.open('Failed to create', 'Close', { duration: 2000 })
         });
@@ -94,12 +126,19 @@ export class ViewStudentComponent implements OnInit {
 
   deleteStudent(student: Student) {
     if (!student._id) return;
-    this.studentService.delete(student._id).subscribe({
-      next: () => {
-        this.snack.open('Student deleted', 'Close', { duration: 2000 });
-        this.fetch();
-      },
-      error: () => this.snack.open('Failed to delete', 'Close', { duration: 2000 })
+    const dialogRef = this.dialog.open(ConfirmDeleteDialog, {
+      width: '320px'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && student._id) {
+        this.studentService.delete(student._id as string).subscribe({
+          next: () => {
+            this.snack.open('Student deleted', 'Close', { duration: 2000 });
+            this.fetch();
+          },
+          error: () => this.snack.open('Failed to delete', 'Close', { duration: 2000 })
+        });
+      }
     });
   }
 }

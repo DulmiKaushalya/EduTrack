@@ -1,9 +1,13 @@
 <div class="header">
   <h2>Students</h2>
-  <button class="add-student-btn" (click)="openCreate()">
-    Add Student
-  </button>
+  <div class="header-actions">
+    <button class="add-student-btn" (click)="openCreate()">
+      Add Student
+    </button>
+    <button class="logout-btn" (click)="logout()">Logout</button>
+  </div>
 </div>
+
   <table class="students-table">
   <thead>
     <tr>

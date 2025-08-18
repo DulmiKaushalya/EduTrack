@@ -1,13 +1,19 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ViewStudentComponent } from './modules/view-student/view-student.component';
-import { LoginComponent } from './modules/login/login.component';
 import { AuthGuard } from './services/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent },
-  { path: 'students', component: ViewStudentComponent, canActivate: [AuthGuard] },
+  {
+    path: 'login',
+    loadComponent: () => import('./modules/login/login.component').then(m => m.LoginComponent)
+  },
+  {
+    path: 'students',
+    canActivate: [AuthGuard],
+    loadComponent: () => import('./modules/view-student/view-student.component').then(m => m.ViewStudentComponent)
+  },
+  { path: '**', redirectTo: 'login' }
 ];
 
 @NgModule({
